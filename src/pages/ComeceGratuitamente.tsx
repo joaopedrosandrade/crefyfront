@@ -37,6 +37,7 @@ const ComeceGratuitamente = () => {
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isLoadingCompany, setIsLoadingCompany] = useState(false);
+  const [isSuccess, setIsSuccess] = useState(false);
   const [errors, setErrors] = useState<Record<string, string>>({});
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -239,40 +240,11 @@ const ComeceGratuitamente = () => {
 
     // Simular envio do formulário
     setTimeout(() => {
-      const personInfo = personType === "pj" 
-        ? `Empresa: ${formData.companyName}\nCNPJ: ${formData.cnpj}\nResponsável: ${formData.responsibleName}`
-        : `Nome: ${formData.fullName}\nCPF: ${formData.cpf}`;
-
-      const usageTypesText = formData.usageType
-        .map((type) => type === "api" ? "API" : "Painel Web")
-        .join(" e ");
-
-      alert(
-        `Cadastro realizado com sucesso!\n\n` +
-        `${personInfo}\n` +
-        `Email: ${formData.email}\n` +
-        `Tipo de uso: ${usageTypesText}\n\n` +
-        `Em breve você receberá um email com as instruções de acesso.`
-      );
-
-      // Resetar formulário
-      setPersonType("");
-      setFormData({
-        companyName: "",
-        cnpj: "",
-        cpf: "",
-        fullName: "",
-        responsibleName: "",
-        email: "",
-        phone: "",
-        usageType: [],
-      });
       setIsSubmitting(false);
+      setIsSuccess(true);
       
-      // Redirecionar para a página inicial após 2 segundos
-      setTimeout(() => {
-        navigate("/");
-      }, 2000);
+      // Scroll para o topo para mostrar a mensagem de sucesso
+      window.scrollTo({ top: 0, behavior: "smooth" });
     }, 1500);
   };
 
@@ -283,25 +255,74 @@ const ComeceGratuitamente = () => {
       
       <section className="pt-32 pb-20">
         <div className="container mx-auto px-4 md:px-6 max-w-4xl">
+          {/* Mensagem de Sucesso */}
+          {isSuccess && (
+            <div className="mb-8 bg-white rounded-2xl shadow-xl border border-green-200 p-8 md:p-10">
+              <div className="text-center">
+                <div className="inline-flex items-center justify-center w-20 h-20 rounded-full bg-green-100 mb-6">
+                  <CheckCircle2 className="h-12 w-12 text-green-600" />
+                </div>
+                <h2 className="text-3xl md:text-4xl font-bold text-riskon-900 mb-4">
+                  Cadastro realizado com sucesso! 🎉
+                </h2>
+                <p className="text-lg text-gray-600 mb-6 max-w-2xl mx-auto">
+                  Parabéns! Seu cadastro foi concluído com sucesso. Em breve você receberá um email com todas as instruções de acesso à plataforma.
+                </p>
+                <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                  <Button
+                    onClick={() => {
+                      setIsSuccess(false);
+                      setPersonType("");
+                      setFormData({
+                        companyName: "",
+                        cnpj: "",
+                        cpf: "",
+                        fullName: "",
+                        responsibleName: "",
+                        email: "",
+                        phone: "",
+                        usageType: [],
+                      });
+                    }}
+                    variant="outline"
+                    className="border-teal-500 text-teal-500 hover:bg-teal-50"
+                  >
+                    Fazer outro cadastro
+                  </Button>
+                  <Button
+                    onClick={() => navigate("/")}
+                    className="bg-teal-500 hover:bg-teal-600 text-white"
+                  >
+                    Voltar para a página inicial
+                    <ArrowRight className="ml-2 h-5 w-5" />
+                  </Button>
+                </div>
+              </div>
+            </div>
+          )}
+
           {/* Header */}
-          <div className="text-center mb-12">
-            <div className="inline-flex items-center px-4 py-2 rounded-full bg-teal-100 text-teal-700 text-sm font-medium mb-6">
-              <ShieldCheck size={16} className="mr-2" />
-              Cadastro Gratuito
+          {!isSuccess && (
+            <div className="text-center mb-12">
+              <div className="inline-flex items-center px-4 py-2 rounded-full bg-teal-100 text-teal-700 text-sm font-medium mb-6">
+                <ShieldCheck size={16} className="mr-2" />
+                Comece Grátis! Sem Cartão de Crédito ou pegadinha. 
+              </div>
+              <div className="flex justify-center mb-4">
+                <img 
+                  src="/img/logo.png" 
+                  alt="Crefy" 
+                  className="h-16 md:h-20 w-auto"
+                />
+              </div>
+              <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+                Escolha o tipo de cadastro e preencha seus dados para começar a usar nossa plataforma de análise de crédito.
+              </p>
             </div>
-            <div className="flex justify-center mb-4">
-              <img 
-                src="/img/logo.png" 
-                alt="Crefy" 
-                className="h-16 md:h-20 w-auto"
-              />
-            </div>
-            <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-              Escolha o tipo de cadastro e preencha seus dados para começar a usar nossa plataforma de análise de crédito.
-            </p>
-          </div>
+          )}
 
           {/* Formulário */}
+          {!isSuccess && (
           <div className="bg-white rounded-2xl shadow-xl border border-gray-100 p-8 md:p-10">
             <form onSubmit={handleSubmit} className="space-y-8">
               {/* Tipo de Pessoa */}
@@ -783,6 +804,7 @@ const ComeceGratuitamente = () => {
               )}
             </form>
           </div>
+          )}
         </div>
       </section>
 
