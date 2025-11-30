@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { 
   Globe, 
   Search, 
@@ -10,13 +10,138 @@ import {
   BrainCircuit,
   Shield,
   CheckCircle2,
-  ArrowRight
+  ArrowRight,
+  CreditCard,
+  CheckCircle,
+  AlertTriangle,
+  XCircle,
+  TrendingUp
 } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 
 const PlatformSection = () => {
+  const [activeSearch, setActiveSearch] = useState(0);
+  const [isSearching, setIsSearching] = useState(false);
+  const [score, setScore] = useState(850);
+  const [paymentChance, setPaymentChance] = useState(95);
+  const [showResults, setShowResults] = useState(true);
+
+  const searchExamples = [
+    { 
+      name: "João Silva", 
+      cpf: "123.456.789-00", 
+      score: 850, 
+      risk: "Baixo", 
+      decision: "Aprovado",
+      history: "Excelente",
+      paymentChance: 95,
+      color: "text-emerald-600",
+      decisionColor: "text-green-600",
+      decisionBg: "bg-green-50",
+      decisionBorder: "border-green-200"
+    },
+    { 
+      name: "Maria Santos", 
+      cpf: "987.654.321-00", 
+      score: 720, 
+      risk: "Médio", 
+      decision: "Análise Manual",
+      history: "Bom",
+      paymentChance: 78,
+      color: "text-yellow-600",
+      decisionColor: "text-yellow-600",
+      decisionBg: "bg-yellow-50",
+      decisionBorder: "border-yellow-200"
+    },
+    { 
+      name: "Pedro Oliveira", 
+      cpf: "456.789.123-00", 
+      score: 680, 
+      risk: "Médio", 
+      decision: "Análise Manual",
+      history: "Regular",
+      paymentChance: 65,
+      color: "text-yellow-600",
+      decisionColor: "text-yellow-600",
+      decisionBg: "bg-yellow-50",
+      decisionBorder: "border-yellow-200"
+    },
+    { 
+      name: "Ana Rodrigues", 
+      cpf: "789.123.456-00", 
+      score: 920, 
+      risk: "Baixo", 
+      decision: "Aprovado",
+      history: "Excelente",
+      paymentChance: 98,
+      color: "text-emerald-600",
+      decisionColor: "text-green-600",
+      decisionBg: "bg-green-50",
+      decisionBorder: "border-green-200"
+    },
+  ];
+
+  // Efeito para animar o score e chance de pagamento quando muda a pesquisa
+  useEffect(() => {
+    if (!isSearching && showResults) {
+      const targetScore = searchExamples[activeSearch].score;
+      const targetChance = searchExamples[activeSearch].paymentChance;
+      setScore(0);
+      setPaymentChance(0);
+      
+      const scoreAnimation = setInterval(() => {
+        setScore(prev => {
+          if (prev >= targetScore) {
+            clearInterval(scoreAnimation);
+            return targetScore;
+          }
+          return prev + 20;
+        });
+      }, 30);
+
+      const chanceAnimation = setInterval(() => {
+        setPaymentChance(prev => {
+          if (prev >= targetChance) {
+            clearInterval(chanceAnimation);
+            return targetChance;
+          }
+          return prev + 2;
+        });
+      }, 30);
+      
+      return () => {
+        clearInterval(scoreAnimation);
+        clearInterval(chanceAnimation);
+      };
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [activeSearch, isSearching, showResults]);
+
+  // Efeito para ciclar entre as pesquisas
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setIsSearching(true);
+      setShowResults(false);
+      setScore(0);
+      setPaymentChance(0);
+      
+      setTimeout(() => {
+        setActiveSearch((prev) => (prev + 1) % searchExamples.length);
+      }, 500);
+      
+      setTimeout(() => {
+        setIsSearching(false);
+        setShowResults(true);
+      }, 1500);
+      
+    }, 5000);
+    
+    return () => clearInterval(interval);
+  }, []);
+
+  const currentSearch = searchExamples[activeSearch];
   return (
     <section id="platform" className="py-24 bg-gradient-to-b from-white via-gray-50 to-white relative overflow-hidden">
       {/* Background decorative elements */}
@@ -83,7 +208,7 @@ const PlatformSection = () => {
                     </div>
                     <div>
                       <h3 className="text-2xl font-bold text-gray-900 mb-2">
-                        Resultados Completos com Gráficos
+                        Resultados Completos 
                       </h3>
                       <p className="text-gray-600 leading-relaxed">
                         Visualize análises detalhadas com gráficos interativos, relatórios completos e métricas 
@@ -92,17 +217,20 @@ const PlatformSection = () => {
                     </div>
                   </div>
 
+                
+
                   <div className="flex items-start space-x-4">
                     <div className="flex-shrink-0 w-12 h-12 rounded-xl bg-gradient-to-br from-teal-500 to-emerald-600 flex items-center justify-center shadow-lg">
-                      <FileText className="text-white" size={24} />
+                      <CreditCard className="text-white" size={24} />
                     </div>
                     <div>
                       <h3 className="text-2xl font-bold text-gray-900 mb-2">
-                        Relatórios Exportáveis
+                        Sistema de Créditos
                       </h3>
                       <p className="text-gray-600 leading-relaxed">
-                        Gere relatórios completos em PDF, compartilhe análises com sua equipe e mantenha um 
-                        histórico completo de todas as avaliações realizadas.
+                        As pesquisas podem ser feitas adicionando créditos na plataforma. Adquira créditos de forma 
+                        simples e use conforme sua necessidade. Cada pesquisa consome um crédito, permitindo total 
+                        controle sobre seus gastos.
                       </p>
                     </div>
                   </div>
@@ -125,15 +253,19 @@ const PlatformSection = () => {
                         <CheckCircle2 className="text-teal-500 mr-3 flex-shrink-0" size={20} />
                         <span>Dashboard com métricas em tempo real</span>
                       </li>
+                      <li className="flex items-center text-gray-700">
+                        <CheckCircle2 className="text-teal-500 mr-3 flex-shrink-0" size={20} />
+                        <span>Sistema de créditos flexível - adicione créditos e faça pesquisas quando precisar</span>
+                      </li>
                     </ul>
                   </div>
                 </div>
 
                 <div className="relative">
-                  <Card className="border-0 shadow-2xl overflow-hidden bg-gradient-to-br from-teal-50 to-emerald-50">
+                  <Card className="border-0 shadow-2xl overflow-hidden bg-gradient-to-br from-teal-50 to-emerald-50 animate-float">
                     <CardContent className="p-8">
                       <div className="space-y-6">
-                        {/* Mockup da plataforma web */}
+                        {/* Mockup da plataforma web com animação */}
                         <div className="bg-white rounded-lg shadow-lg p-6">
                           <div className="flex items-center justify-between mb-4">
                             <div className="flex items-center space-x-2">
@@ -144,24 +276,143 @@ const PlatformSection = () => {
                             <Search className="text-gray-400" size={20} />
                           </div>
                           <div className="space-y-4">
-                            <div className="h-10 bg-gray-100 rounded-lg flex items-center px-4">
-                              <span className="text-gray-500 text-sm">Pesquisar cliente...</span>
+                            {/* Campo de pesquisa */}
+                            <div className="h-10 bg-gray-100 rounded-lg flex items-center px-4 relative overflow-hidden">
+                              {isSearching ? (
+                                <div className="flex items-center space-x-2 w-full">
+                                  <div className="w-4 h-4 border-2 border-teal-500 border-t-transparent rounded-full animate-spin"></div>
+                                  <span className="text-teal-600 text-sm font-medium">Pesquisando...</span>
+                                </div>
+                              ) : (
+                                <div className="flex items-center space-x-2 w-full">
+                                  <Search className="text-gray-400" size={16} />
+                                  <span className="text-gray-700 text-sm font-medium">{currentSearch.name} - {currentSearch.cpf}</span>
+                                </div>
+                              )}
                             </div>
-                            <div className="bg-gradient-to-r from-teal-100 to-emerald-100 rounded-lg p-4">
-                              <div className="h-32 bg-white rounded-lg flex items-center justify-center">
-                                <BarChart3 className="text-teal-500" size={48} />
+                            
+                            {/* Área de gráficos */}
+                            {showResults && !isSearching ? (
+                              <div className="bg-gradient-to-r from-teal-100 to-emerald-100 rounded-lg p-4 animate-fade-in">
+                                <div className="h-32 bg-white rounded-lg flex items-center justify-center relative overflow-hidden">
+                                  <BarChart3 className="text-teal-500" size={48} />
+                                  {/* Animação de barras do gráfico */}
+                                  <div className="absolute inset-0 flex items-end justify-center space-x-2 px-4 pb-2">
+                                    <div className="w-6 bg-teal-400 rounded-t" style={{ height: '60%' }}></div>
+                                    <div className="w-6 bg-emerald-400 rounded-t" style={{ height: '80%' }}></div>
+                                    <div className="w-6 bg-teal-500 rounded-t" style={{ height: '45%' }}></div>
+                                    <div className="w-6 bg-emerald-500 rounded-t" style={{ height: '90%' }}></div>
+                                    <div className="w-6 bg-teal-400 rounded-t" style={{ height: '70%' }}></div>
+                                  </div>
+                                </div>
                               </div>
-                            </div>
-                            <div className="grid grid-cols-2 gap-3">
-                              <div className="bg-white rounded-lg p-3 shadow-sm">
-                                <div className="text-xs text-gray-500 mb-1">Score</div>
-                                <div className="text-2xl font-bold text-teal-600">850</div>
+                            ) : (
+                              <div className="bg-gradient-to-r from-teal-100 to-emerald-100 rounded-lg p-4">
+                                <div className="h-32 bg-white rounded-lg flex items-center justify-center">
+                                  {isSearching ? (
+                                    <div className="flex flex-col items-center space-y-2">
+                                      <div className="w-8 h-8 border-2 border-teal-500 border-t-transparent rounded-full animate-spin"></div>
+                                      <span className="text-teal-600 text-xs font-medium">Analisando dados...</span>
+                                    </div>
+                                  ) : (
+                                    <BarChart3 className="text-teal-500 opacity-50" size={48} />
+                                  )}
+                                </div>
                               </div>
-                              <div className="bg-white rounded-lg p-3 shadow-sm">
-                                <div className="text-xs text-gray-500 mb-1">Risco</div>
-                                <div className="text-2xl font-bold text-emerald-600">Baixo</div>
+                            )}
+                            
+                            {/* Resultados */}
+                            {showResults && !isSearching ? (
+                              <div className="space-y-3 animate-fade-in">
+                                {/* Decisão da IA */}
+                                <div className={`bg-white rounded-lg p-4 shadow-sm border-2 ${currentSearch.decisionBorder} ${currentSearch.decisionBg}`}>
+                                  <div className="flex items-center justify-between mb-2">
+                                    <div className="flex items-center space-x-2">
+                                      <BrainCircuit className={`${currentSearch.decisionColor}`} size={18} />
+                                      <span className="text-xs font-semibold text-gray-600">Decisão da IA</span>
+                                    </div>
+                                    {currentSearch.decision === "Aprovado" ? (
+                                      <CheckCircle className="text-green-600" size={20} />
+                                    ) : (
+                                      <AlertTriangle className="text-yellow-600" size={20} />
+                                    )}
+                                  </div>
+                                  <div className={`text-lg font-bold ${currentSearch.decisionColor}`}>
+                                    {currentSearch.decision}
+                                  </div>
+                                </div>
+
+                                {/* Grid de métricas */}
+                                <div className="grid grid-cols-2 gap-3">
+                                  <div className="bg-white rounded-lg p-3 shadow-sm border border-teal-100">
+                                    <div className="text-xs text-gray-500 mb-1">Score</div>
+                                    <div className={`text-2xl font-bold transition-all duration-500 ${currentSearch.color}`}>
+                                      {score}
+                                    </div>
+                                  </div>
+                                  <div className="bg-white rounded-lg p-3 shadow-sm border border-teal-100">
+                                    <div className="text-xs text-gray-500 mb-1">Risco</div>
+                                    <div className={`text-lg font-bold transition-all duration-500 ${currentSearch.color}`}>
+                                      {currentSearch.risk}
+                                    </div>
+                                  </div>
+                                </div>
+
+                                {/* Histórico de Crédito */}
+                                <div className="bg-white rounded-lg p-3 shadow-sm border border-teal-100">
+                                  <div className="flex items-center justify-between">
+                                    <div className="text-xs text-gray-500">Histórico de Crédito</div>
+                                    <div className={`text-sm font-bold ${currentSearch.color}`}>
+                                      {currentSearch.history}
+                                    </div>
+                                  </div>
+                                </div>
+
+                                {/* Chance de Pagamento */}
+                                <div className="bg-white rounded-lg p-3 shadow-sm border border-teal-100">
+                                  <div className="flex items-center justify-between mb-2">
+                                    <div className="flex items-center space-x-1">
+                                      <TrendingUp className="text-teal-500" size={16} />
+                                      <span className="text-xs text-gray-500">Chance de Pagamento</span>
+                                    </div>
+                                    <div className={`text-lg font-bold transition-all duration-500 ${currentSearch.color}`}>
+                                      {paymentChance}%
+                                    </div>
+                                  </div>
+                                  <div className="w-full bg-gray-200 rounded-full h-2 overflow-hidden">
+                                    <div 
+                                      className={`h-full rounded-full transition-all duration-500 ${
+                                        paymentChance >= 85 ? 'bg-green-500' : 
+                                        paymentChance >= 70 ? 'bg-yellow-500' : 'bg-red-500'
+                                      }`}
+                                      style={{ width: `${paymentChance}%` }}
+                                    ></div>
+                                  </div>
+                                </div>
                               </div>
-                            </div>
+                            ) : (
+                              <div className="space-y-3">
+                                <div className="bg-gray-50 rounded-lg p-4">
+                                  <div className="h-12 bg-gray-200 rounded animate-pulse"></div>
+                                </div>
+                                <div className="grid grid-cols-2 gap-3">
+                                  <div className="bg-gray-50 rounded-lg p-3">
+                                    <div className="text-xs text-gray-400 mb-1">Score</div>
+                                    <div className="h-8 bg-gray-200 rounded animate-pulse"></div>
+                                  </div>
+                                  <div className="bg-gray-50 rounded-lg p-3">
+                                    <div className="text-xs text-gray-400 mb-1">Risco</div>
+                                    <div className="h-8 bg-gray-200 rounded animate-pulse"></div>
+                                  </div>
+                                </div>
+                                <div className="bg-gray-50 rounded-lg p-3">
+                                  <div className="h-8 bg-gray-200 rounded animate-pulse"></div>
+                                </div>
+                                <div className="bg-gray-50 rounded-lg p-3">
+                                  <div className="h-12 bg-gray-200 rounded animate-pulse"></div>
+                                </div>
+                              </div>
+                            )}
                           </div>
                         </div>
                       </div>
@@ -175,7 +426,7 @@ const PlatformSection = () => {
             <TabsContent value="api-integration" className="mt-8">
               <div className="grid lg:grid-cols-2 gap-8 items-center">
                 <div className="relative order-2 lg:order-1">
-                  <Card className="border-0 shadow-2xl overflow-hidden bg-gradient-to-br from-gray-50 to-teal-50">
+                  <Card className="border-0 shadow-2xl overflow-hidden bg-gradient-to-br from-gray-50 to-teal-50 animate-float">
                     <CardContent className="p-8">
                       <div className="space-y-6">
                         {/* Mockup da integração */}
@@ -283,12 +534,7 @@ const PlatformSection = () => {
                     </ul>
                   </div>
 
-                  <div className="pt-4">
-                    <Button className="bg-gradient-to-r from-teal-500 to-emerald-600 hover:from-teal-600 hover:to-emerald-700 text-white px-8 py-6 text-lg font-semibold shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105">
-                      Ver Documentação da API
-                      <ArrowRight className="ml-2" size={20} />
-                    </Button>
-                  </div>
+                 
                 </div>
               </div>
             </TabsContent>
