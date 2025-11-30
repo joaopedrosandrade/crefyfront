@@ -27,8 +27,12 @@ const Navbar = () => {
       <div className="container mx-auto px-4 md:px-6">
         <div className="flex justify-between items-center">
           <div className="flex items-center">
-            <a href="#" className="text-2xl font-bold text-riskon-900">
-              <span className="text-teal-500">Cre</span>fy
+            <a href="#" className="flex items-center">
+              <img 
+                src="/img/logo.png" 
+                alt="Crefy" 
+                className="h-8 md:h-10 w-auto"
+              />
             </a>
           </div>
 
