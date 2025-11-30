@@ -36,7 +36,7 @@ const ScheduleModal: React.FC<ScheduleModalProps> = ({ open, onOpenChange }) => 
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   // Horários disponíveis
-  const availableTimes = [
+  const allAvailableTimes = [
     "08:00",
     "09:00",
     "10:00",
@@ -46,6 +46,60 @@ const ScheduleModal: React.FC<ScheduleModalProps> = ({ open, onOpenChange }) => 
     "16:00",
     "17:00",
   ];
+
+  // Verifica se é dia útil (segunda a sexta)
+  const isWeekday = (date: Date): boolean => {
+    const day = date.getDay();
+    return day >= 1 && day <= 5; // 1 = segunda, 5 = sexta
+  };
+
+  // Verifica se a data selecionada é hoje
+  const isToday = (date: Date): boolean => {
+    const today = new Date();
+    return (
+      date.getDate() === today.getDate() &&
+      date.getMonth() === today.getMonth() &&
+      date.getFullYear() === today.getFullYear()
+    );
+  };
+
+  // Obtém horários disponíveis baseado na data selecionada
+  const getAvailableTimes = (date: Date | undefined): string[] => {
+    if (!date) return [];
+
+    // Se for hoje, filtra horários que ainda não passaram
+    if (isToday(date)) {
+      const now = new Date();
+      const currentHour = now.getHours();
+      const currentMinute = now.getMinutes();
+      const currentTime = currentHour * 60 + currentMinute; // minutos desde meia-noite
+
+      return allAvailableTimes.filter((time) => {
+        const [hour, minute] = time.split(":").map(Number);
+        const timeInMinutes = hour * 60 + minute;
+        return timeInMinutes > currentTime;
+      });
+    }
+
+    // Se não for hoje, mostra todos os horários
+    return allAvailableTimes;
+  };
+
+  const availableTimes = getAvailableTimes(selectedDate);
+
+  // Handler para quando a data é selecionada
+  const handleDateSelect = (date: Date | undefined) => {
+    setSelectedDate(date);
+    // Limpar horário selecionado se não for mais válido
+    if (date && selectedTime) {
+      const times = getAvailableTimes(date);
+      if (!times.includes(selectedTime)) {
+        setSelectedTime("");
+      }
+    } else {
+      setSelectedTime("");
+    }
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -114,11 +168,12 @@ const ScheduleModal: React.FC<ScheduleModalProps> = ({ open, onOpenChange }) => 
                   <Calendar
                     mode="single"
                     selected={selectedDate}
-                    onSelect={setSelectedDate}
+                    onSelect={handleDateSelect}
                     disabled={(date) => {
                       const today = new Date();
                       today.setHours(0, 0, 0, 0);
-                      return date < today;
+                      // Desabilita datas passadas e fins de semana
+                      return date < today || !isWeekday(date);
                     }}
                     locale={ptBR}
                     weekStartsOn={1}
@@ -147,29 +202,41 @@ const ScheduleModal: React.FC<ScheduleModalProps> = ({ open, onOpenChange }) => 
                   Selecione o Horário *
                 </Label>
                 <div className="border-2 border-gray-200 rounded-lg p-4 bg-gradient-to-br from-white to-gray-50">
-                  <div className="grid grid-cols-2 gap-2">
-                    {availableTimes.map((time) => (
-                      <button
-                        key={time}
-                        type="button"
-                        onClick={() => setSelectedTime(time)}
-                        className={`
-                          px-4 py-3 rounded-lg border-2 transition-all duration-200
-                          text-sm font-medium
-                          ${
-                            selectedTime === time
-                              ? "bg-teal-500 text-white border-teal-500 shadow-md scale-105"
-                              : "bg-white text-gray-700 border-gray-300 hover:border-teal-300 hover:bg-teal-50"
-                          }
-                        `}
-                      >
-                        <div className="flex items-center justify-center gap-2">
-                          <Clock className={`h-4 w-4 ${selectedTime === time ? "text-white" : "text-teal-500"}`} />
-                          <span>{time}</span>
-                        </div>
-                      </button>
-                    ))}
-                  </div>
+                  {availableTimes.length > 0 ? (
+                    <div className="grid grid-cols-2 gap-2">
+                      {availableTimes.map((time) => (
+                        <button
+                          key={time}
+                          type="button"
+                          onClick={() => setSelectedTime(time)}
+                          className={`
+                            px-4 py-3 rounded-lg border-2 transition-all duration-200
+                            text-sm font-medium
+                            ${
+                              selectedTime === time
+                                ? "bg-teal-500 text-white border-teal-500 shadow-md scale-105"
+                                : "bg-white text-gray-700 border-gray-300 hover:border-teal-300 hover:bg-teal-50"
+                            }
+                          `}
+                        >
+                          <div className="flex items-center justify-center gap-2">
+                            <Clock className={`h-4 w-4 ${selectedTime === time ? "text-white" : "text-teal-500"}`} />
+                            <span>{time}</span>
+                          </div>
+                        </button>
+                      ))}
+                    </div>
+                  ) : (
+                    <div className="text-center py-8">
+                      <p className="text-sm text-gray-500">
+                        {!selectedDate
+                          ? "Selecione uma data primeiro para ver os horários disponíveis."
+                          : isToday(selectedDate)
+                          ? "Não há mais horários disponíveis hoje. Por favor, selecione outra data."
+                          : "Nenhum horário disponível para esta data."}
+                      </p>
+                    </div>
+                  )}
                 </div>
                 {selectedTime && (
                   <div className="flex items-center gap-2 p-3 bg-teal-50 border border-teal-200 rounded-lg">
