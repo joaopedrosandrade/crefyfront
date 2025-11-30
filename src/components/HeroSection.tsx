@@ -1,10 +1,12 @@
 
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, CheckCircle, ShieldCheck, AlertTriangle, CheckCircle2, XCircle } from "lucide-react";
 import ScheduleModal from "./ScheduleModal";
 
 const HeroSection = () => {
+  const navigate = useNavigate();
   const [activeStep, setActiveStep] = useState(0);
   const [creditScore, setCreditScore] = useState(0);
   const [decision, setDecision] = useState("");
@@ -89,7 +91,11 @@ const HeroSection = () => {
             </p>
             
             <div className="flex flex-col sm:flex-row gap-4">
-              <Button size="lg" className="bg-teal-500 hover:bg-teal-600 text-white px-6 py-6">
+              <Button 
+                size="lg" 
+                className="bg-teal-500 hover:bg-teal-600 text-white px-6 py-6"
+                onClick={() => navigate("/comece-gratuitamente")}
+              >
                 Comece Gratuitamente
                 <ArrowRight size={18} className="ml-2" />
               </Button>

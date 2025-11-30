@@ -1,9 +1,12 @@
 
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
 
 const CtaSection = () => {
+  const navigate = useNavigate();
+  
   return (
     <section className="py-20 bg-gradient-to-r from-teal-500 to-blue-600 text-white">
       <div className="container mx-auto px-4 md:px-6">
@@ -18,6 +21,7 @@ const CtaSection = () => {
             <Button 
               size="lg" 
               className="bg-white text-teal-600 hover:bg-gray-100 px-8 py-6 text-lg"
+              onClick={() => navigate("/comece-gratuitamente")}
             >
               Começar Gratuitamente
               <ArrowRight size={20} className="ml-2" />

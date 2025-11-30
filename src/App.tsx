@@ -10,6 +10,7 @@ import Privacidade from "./pages/Privacidade";
 import Seguranca from "./pages/Seguranca";
 import Cookies from "./pages/Cookies";
 import Compliance from "./pages/Compliance";
+import ComeceGratuitamente from "./pages/ComeceGratuitamente";
 import CookieBanner from "./components/CookieBanner";
 
 const queryClient = new QueryClient();
@@ -23,6 +24,7 @@ const App = () => (
         <CookieBanner />
         <Routes>
           <Route path="/" element={<Index />} />
+          <Route path="/comece-gratuitamente" element={<ComeceGratuitamente />} />
           <Route path="/termos-de-servico" element={<TermosDeServico />} />
           <Route path="/privacidade" element={<Privacidade />} />
           <Route path="/seguranca" element={<Seguranca />} />

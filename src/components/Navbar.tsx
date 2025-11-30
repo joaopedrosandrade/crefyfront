@@ -1,9 +1,11 @@
 
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Menu, X } from "lucide-react";
 
 const Navbar = () => {
+  const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
 
@@ -53,7 +55,10 @@ const Navbar = () => {
             <Button variant="outline" className="border-teal-500 text-teal-500 hover:bg-teal-50">
               Login
             </Button>
-            <Button className="bg-teal-500 hover:bg-teal-600 text-white">
+            <Button 
+              className="bg-teal-500 hover:bg-teal-600 text-white"
+              onClick={() => navigate("/comece-gratuitamente")}
+            >
               Comece Grátis
             </Button>
           </div>
@@ -105,7 +110,13 @@ const Navbar = () => {
                 <Button variant="outline" className="w-full border-teal-500 text-teal-500 hover:bg-teal-50">
                   Login
                 </Button>
-                <Button className="w-full bg-teal-500 hover:bg-teal-600 text-white">
+                <Button 
+                  className="w-full bg-teal-500 hover:bg-teal-600 text-white"
+                  onClick={() => {
+                    navigate("/comece-gratuitamente");
+                    setIsOpen(false);
+                  }}
+                >
                   Comece Grátis
                 </Button>
               </div>
