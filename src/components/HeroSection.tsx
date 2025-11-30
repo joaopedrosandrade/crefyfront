@@ -2,12 +2,14 @@
 import React, { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, CheckCircle, ShieldCheck, AlertTriangle, CheckCircle2, XCircle } from "lucide-react";
+import ScheduleModal from "./ScheduleModal";
 
 const HeroSection = () => {
   const [activeStep, setActiveStep] = useState(0);
   const [creditScore, setCreditScore] = useState(0);
   const [decision, setDecision] = useState("");
   const [loading, setLoading] = useState(false);
+  const [isScheduleModalOpen, setIsScheduleModalOpen] = useState(false);
 
   const creditProfiles = [
     { name: "João Silva", score: 750, income: "R$ 5.200", history: "Bom", decision: "Aprovado", color: "text-green-500" },
@@ -91,8 +93,13 @@ const HeroSection = () => {
                 Comece Gratuitamente
                 <ArrowRight size={18} className="ml-2" />
               </Button>
-              <Button size="lg" variant="outline" className="border-teal-500 text-teal-500 hover:bg-teal-50 px-6 py-6">
-                Agende uma Demo
+              <Button 
+                size="lg" 
+                variant="outline" 
+                className="border-teal-500 text-teal-500 hover:bg-teal-50 px-6 py-6"
+                onClick={() => setIsScheduleModalOpen(true)}
+              >
+                Agende uma Demonstração
               </Button>
             </div>
             
@@ -257,6 +264,11 @@ const HeroSection = () => {
           </div>
         </div>
       </div>
+      
+      <ScheduleModal 
+        open={isScheduleModalOpen} 
+        onOpenChange={setIsScheduleModalOpen} 
+      />
     </section>
   );
 };
