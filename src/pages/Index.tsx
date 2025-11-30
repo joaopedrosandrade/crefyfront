@@ -1,5 +1,6 @@
 
-import React from "react";
+import React, { useEffect } from "react";
+import { useLocation } from "react-router-dom";
 import Navbar from "@/components/Navbar";
 import HeroSection from "@/components/HeroSection";
 import FeaturesSection from "@/components/FeaturesSection";
@@ -11,6 +12,20 @@ import Footer from "@/components/Footer";
 import ScrollToTop from "@/components/ScrollToTop";
 
 const Index = () => {
+  const location = useLocation();
+
+  useEffect(() => {
+    // Se houver um hash na URL, faz scroll para a seção
+    if (location.hash) {
+      const element = document.querySelector(location.hash);
+      if (element) {
+        setTimeout(() => {
+          element.scrollIntoView({ behavior: "smooth" });
+        }, 100);
+      }
+    }
+  }, [location]);
+
   return (
     <div className="min-h-screen bg-white">
       <Navbar />
@@ -19,7 +34,7 @@ const Index = () => {
       <HowItWorksSection />
       <FaqSection />
     
-      <ContactSection />
+    
       <Footer />
       <ScrollToTop />
     </div>

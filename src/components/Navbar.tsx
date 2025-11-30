@@ -1,13 +1,37 @@
 
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Menu, X } from "lucide-react";
 
 const Navbar = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   const [isOpen, setIsOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
+  
+  const isHomePage = location.pathname === "/";
+  
+  const handleNavClick = (hash: string) => {
+    if (isHomePage) {
+      // Se estiver na página inicial, apenas rola para a seção
+      const element = document.querySelector(hash);
+      if (element) {
+        element.scrollIntoView({ behavior: "smooth" });
+      }
+    } else {
+      // Se estiver em outra página, navega para a inicial com o hash
+      navigate(`/${hash}`);
+      // Aguarda a navegação e então faz scroll
+      setTimeout(() => {
+        const element = document.querySelector(hash);
+        if (element) {
+          element.scrollIntoView({ behavior: "smooth" });
+        }
+      }, 100);
+    }
+    setIsOpen(false);
+  };
 
   useEffect(() => {
     const handleScroll = () => {
@@ -29,7 +53,14 @@ const Navbar = () => {
       <div className="container mx-auto px-4 md:px-6">
         <div className="flex justify-between items-center">
           <div className="flex items-center">
-            <a href="#" className="flex items-center">
+            <a 
+              href="/" 
+              onClick={(e) => {
+                e.preventDefault();
+                navigate("/");
+              }}
+              className="flex items-center"
+            >
               <img 
                 src="/img/logo.png" 
                 alt="Crefy" 
@@ -40,18 +71,25 @@ const Navbar = () => {
 
           {/* Desktop menu */}
           <div className="hidden md:flex items-center space-x-8">
-            <a href="#features" className="text-gray-700 hover:text-teal-500 transition-colors">
+            <button 
+              onClick={() => handleNavClick("#features")}
+              className="text-gray-700 hover:text-teal-500 transition-colors"
+            >
               Recursos
-            </a>
-            <a href="#how-it-works" className="text-gray-700 hover:text-teal-500 transition-colors">
+            </button>
+            <button 
+              onClick={() => handleNavClick("#how-it-works")}
+              className="text-gray-700 hover:text-teal-500 transition-colors"
+            >
               Como Funciona
-            </a>
-            <a href="#faq" className="text-gray-700 hover:text-teal-500 transition-colors">
-              FAQ
-            </a>
-            <a href="#contact" className="text-gray-700 hover:text-teal-500 transition-colors">
-              Contato
-            </a>
+            </button>
+            <button 
+              onClick={() => handleNavClick("#faq")}
+              className="text-gray-700 hover:text-teal-500 transition-colors"
+            >
+              Dúvidas Frequentes
+            </button>
+           
             <Button variant="outline" className="border-teal-500 text-teal-500 hover:bg-teal-50">
               Login
             </Button>
@@ -78,34 +116,30 @@ const Navbar = () => {
         {isOpen && (
           <div className="md:hidden mt-4 bg-white rounded-lg shadow-lg p-4 animate-fade-in">
             <div className="flex flex-col space-y-4">
-              <a
-                href="#features"
-                className="text-gray-700 hover:text-teal-500 transition-colors py-2"
-                onClick={() => setIsOpen(false)}
+              <button
+                onClick={() => handleNavClick("#features")}
+                className="text-gray-700 hover:text-teal-500 transition-colors py-2 text-left"
               >
                 Recursos
-              </a>
-              <a
-                href="#how-it-works"
-                className="text-gray-700 hover:text-teal-500 transition-colors py-2"
-                onClick={() => setIsOpen(false)}
+              </button>
+              <button
+                onClick={() => handleNavClick("#how-it-works")}
+                className="text-gray-700 hover:text-teal-500 transition-colors py-2 text-left"
               >
                 Como Funciona
-              </a>
-              <a
-                href="#faq"
-                className="text-gray-700 hover:text-teal-500 transition-colors py-2"
-                onClick={() => setIsOpen(false)}
+              </button>
+              <button
+                onClick={() => handleNavClick("#faq")}
+                className="text-gray-700 hover:text-teal-500 transition-colors py-2 text-left"
               >
                 FAQ
-              </a>
-              <a
-                href="#contact"
-                className="text-gray-700 hover:text-teal-500 transition-colors py-2"
-                onClick={() => setIsOpen(false)}
+              </button>
+              <button
+                onClick={() => handleNavClick("#contact")}
+                className="text-gray-700 hover:text-teal-500 transition-colors py-2 text-left"
               >
                 Contato
-              </a>
+              </button>
               <div className="flex flex-col space-y-2 pt-2 border-t">
                 <Button variant="outline" className="w-full border-teal-500 text-teal-500 hover:bg-teal-50">
                   Login
