@@ -1,12 +1,15 @@
-import React from "react";
+import React, { useState } from "react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import ScrollToTop from "@/components/ScrollToTop";
 import SEO from "@/components/SEO";
 import { Button } from "@/components/ui/button";
 import { Briefcase, Users, TrendingUp, Heart, Zap } from "lucide-react";
+import ResumeModal from "@/components/ResumeModal";
 
 const Carreiras = () => {
+  const [isResumeModalOpen, setIsResumeModalOpen] = useState(false);
+
   return (
     <>
       <SEO
@@ -91,12 +94,13 @@ const Carreiras = () => {
                   <h2 className="text-2xl font-bold text-riskon-900">Vagas Abertas</h2>
                 </div>
                 <p className="mb-6">
-                  No momento, não temos vagas abertas, mas estamos sempre abertos a receber currículos de profissionais talentosos. Envie seu currículo e fique em nosso banco de talentos!
+                  No momento, <strong>não</strong> temos vagas abertas, mas estamos sempre abertos a receber currículos de profissionais talentosos. Envie seu currículo e fique em nosso banco de talentos!
                 </p>
-                <Button asChild className="bg-teal-500 hover:bg-teal-600">
-                  <a href="mailto:carreiras@crefy.com.br?subject=Candidatura Espontânea">
-                    Enviar Currículo
-                  </a>
+                <Button 
+                  onClick={() => setIsResumeModalOpen(true)}
+                  className="bg-teal-500 hover:bg-teal-600"
+                >
+                  Enviar Currículo
                 </Button>
               </section>
 
@@ -106,6 +110,10 @@ const Carreiras = () => {
         </main>
         <Footer />
         <ScrollToTop />
+        <ResumeModal 
+          open={isResumeModalOpen} 
+          onOpenChange={setIsResumeModalOpen} 
+        />
       </div>
     </>
   );
