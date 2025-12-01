@@ -143,7 +143,7 @@ const PlatformSection = () => {
 
   const currentSearch = searchExamples[activeSearch];
   return (
-    <section id="platform" className="py-24 bg-gradient-to-b from-white via-gray-50 to-white relative overflow-hidden">
+    <section id="platform" className="py-7 bg-gradient-to-b from-white via-gray-50 to-white relative overflow-hidden">
       {/* Background decorative elements */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <div className="absolute top-0 right-1/4 w-96 h-96 bg-teal-200/20 rounded-full blur-3xl"></div>

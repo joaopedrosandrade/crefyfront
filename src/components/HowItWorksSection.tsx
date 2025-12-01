@@ -49,7 +49,7 @@ const steps = [
 
 const HowItWorksSection = () => {
   return (
-    <section id="how-it-works" className="py-24 bg-gradient-to-b from-white via-gray-50 to-white relative overflow-hidden">
+    <section id="how-it-works" className="py-10 bg-gradient-to-b from-white via-gray-50 to-white relative overflow-hidden">
       {/* Background decorative elements */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <div className="absolute top-1/4 left-0 w-96 h-96 bg-teal-200/15 rounded-full blur-3xl"></div>
@@ -119,63 +119,7 @@ const HowItWorksSection = () => {
           })}
         </div>
 
-        <div className="relative">
-          <div className="bg-gradient-to-br from-gray-50 via-white to-teal-50/30 rounded-3xl shadow-2xl p-8 md:p-16 border border-gray-100/50 backdrop-blur-sm relative overflow-hidden">
-            {/* Animated background pattern */}
-            <div className="absolute inset-0 opacity-5">
-              <div className="absolute inset-0" style={{
-                backgroundImage: `radial-gradient(circle at 2px 2px, rgb(0 0 0) 1px, transparent 0)`,
-                backgroundSize: '40px 40px'
-              }}></div>
-            </div>
-            
-            <div className="flex flex-col lg:flex-row gap-12 lg:gap-16 items-center relative z-10">
-              <div className="lg:w-2/3 space-y-8">
-                <h3 className="text-3xl md:text-4xl lg:text-5xl font-bold bg-gradient-to-r from-gray-900 to-gray-700 bg-clip-text text-transparent leading-tight">
-                  Comece a tomar decisões de crédito melhores hoje mesmo
-                </h3>
-                <p className="text-lg md:text-xl text-gray-600 leading-relaxed">
-                  Junte-se a centenas de empresas que já transformaram seus processos de crédito com Crefy.
-                </p>
-                <div className="space-y-5">
-                  <div className="flex items-start group">
-                    <div className="text-teal-500 mr-4 mt-1 flex-shrink-0 bg-teal-50 rounded-full p-2 group-hover:scale-110 transition-transform">
-                      <CheckCircle2 size={20} className="fill-teal-500 text-white" />
-                    </div>
-                    <p className="text-gray-700 text-lg font-medium group-hover:text-gray-900 transition-colors">
-                      Redução média de <span className="text-teal-600 font-bold">35%</span> em inadimplência para nossos clientes
-                    </p>
-                  </div>
-                  <div className="flex items-start group">
-                    <div className="text-teal-500 mr-4 mt-1 flex-shrink-0 bg-teal-50 rounded-full p-2 group-hover:scale-110 transition-transform">
-                      <CheckCircle2 size={20} className="fill-teal-500 text-white" />
-                    </div>
-                    <p className="text-gray-700 text-lg font-medium group-hover:text-gray-900 transition-colors">
-                      Economia de até <span className="text-teal-600 font-bold">70%</span> em custos operacionais de análise de crédito
-                    </p>
-                  </div>
-                  <div className="flex items-start group">
-                    <div className="text-teal-500 mr-4 mt-1 flex-shrink-0 bg-teal-50 rounded-full p-2 group-hover:scale-110 transition-transform">
-                      <CheckCircle2 size={20} className="fill-teal-500 text-white" />
-                    </div>
-                    <p className="text-gray-700 text-lg font-medium group-hover:text-gray-900 transition-colors">
-                      Implementação rápida com resultados em semanas, não meses
-                    </p>
-                  </div>
-                </div>
-              </div>
-              <div className="lg:w-1/3 flex justify-center w-full lg:w-auto">
-                <Button 
-                  size="lg" 
-                  className="bg-gradient-to-r from-teal-500 to-emerald-600 hover:from-teal-600 hover:to-emerald-700 text-white px-8 py-6 text-lg font-semibold shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 w-full md:w-auto"
-                >
-                  Agende uma Demonstração
-                  <ArrowRight size={20} className="ml-2" />
-                </Button>
-              </div>
-            </div>
-          </div>
-        </div>
+      
       </div>
     </section>
   );
