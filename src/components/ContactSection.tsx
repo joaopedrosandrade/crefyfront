@@ -59,17 +59,7 @@ const ContactSection = () => {
 
         <div className="grid grid-cols-1 lg:grid-cols-5 gap-12 items-start">
           <div className="lg:col-span-2 space-y-8">
-            <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
-              <div className="flex items-start">
-                <div className="bg-teal-50 p-3 rounded-lg mr-4">
-                  <MapPin size={24} className="text-teal-500" />
-                </div>
-                <div>
-                  <h3 className="font-bold text-riskon-900 mb-1">Nosso Endereço</h3>
-                  <p className="text-gray-600">Av. Paulista, 1000, São Paulo - SP</p>
-                </div>
-              </div>
-            </div>
+            
 
             <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
               <div className="flex items-start">
