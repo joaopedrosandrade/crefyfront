@@ -11,6 +11,9 @@ import Seguranca from "./pages/Seguranca";
 import Cookies from "./pages/Cookies";
 import Compliance from "./pages/Compliance";
 import ComeceGratuitamente from "./pages/ComeceGratuitamente";
+import SobreNos from "./pages/SobreNos";
+import Carreiras from "./pages/Carreiras";
+import Contato from "./pages/Contato";
 import CookieBanner from "./components/CookieBanner";
 import ScrollToTopOnRouteChange from "./components/ScrollToTopOnRouteChange";
 
@@ -27,6 +30,9 @@ const App = () => (
         <Routes>
           <Route path="/" element={<Index />} />
           <Route path="/comece-gratuitamente" element={<ComeceGratuitamente />} />
+          <Route path="/sobre-nos" element={<SobreNos />} />
+          <Route path="/carreiras" element={<Carreiras />} />
+          <Route path="/contato" element={<Contato />} />
           <Route path="/termos-de-servico" element={<TermosDeServico />} />
           <Route path="/privacidade" element={<Privacidade />} />
           <Route path="/seguranca" element={<Seguranca />} />

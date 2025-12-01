@@ -62,11 +62,13 @@ const Footer = () => {
           <div>
             <h4 className="font-bold text-lg mb-4 text-riskon-900">Empresa</h4>
             <ul className="space-y-3">
-              <li><a href="#" className="text-gray-600 hover:text-teal-500 transition-colors">Sobre Nós</a></li>
-              <li><a href="#" className="text-gray-600 hover:text-teal-500 transition-colors">Carreiras</a></li>
-            
-           
-              <li><a href="#contact" onClick={(e) => handleSectionClick("#contact", e)} className="text-gray-600 hover:text-teal-500 transition-colors">Contato</a></li>
+              <li><Link to="/sobre-nos" className="text-gray-600 hover:text-teal-500 transition-colors">Sobre Nós</Link></li>
+              <li><Link to="/carreiras" className="text-gray-600 hover:text-teal-500 transition-colors">Carreiras</Link></li>
+              {isHomePage ? (
+                <li><a href="#contact" onClick={(e) => handleSectionClick("#contact", e)} className="text-gray-600 hover:text-teal-500 transition-colors">Contato</a></li>
+              ) : (
+                <li><Link to="/contato" className="text-gray-600 hover:text-teal-500 transition-colors">Contato</Link></li>
+              )}
             </ul>
           </div>
 
