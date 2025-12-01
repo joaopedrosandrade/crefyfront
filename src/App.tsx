@@ -12,6 +12,7 @@ import Cookies from "./pages/Cookies";
 import Compliance from "./pages/Compliance";
 import ComeceGratuitamente from "./pages/ComeceGratuitamente";
 import CookieBanner from "./components/CookieBanner";
+import ScrollToTopOnRouteChange from "./components/ScrollToTopOnRouteChange";
 
 const queryClient = new QueryClient();
 
@@ -21,6 +22,7 @@ const App = () => (
       <Toaster />
       <Sonner />
       <BrowserRouter>
+        <ScrollToTopOnRouteChange />
         <CookieBanner />
         <Routes>
           <Route path="/" element={<Index />} />

@@ -75,7 +75,7 @@ const HeroSection = () => {
       <div className="container mx-auto px-4 md:px-6 relative z-10">
         <div className="flex flex-col lg:flex-row items-center gap-12">
           <div className="lg:w-1/2 space-y-8">
-            <div className="inline-flex items-center px-3 py-1.5 rounded-full bg-blue-100 text-blue-700 text-sm font-medium mb-6">
+            <div className="inline-flex items-center px-3 py-1.5 rounded-full bg-teal-100 text-teal-700 text-sm font-medium mb-1">
               <span className="flex items-center">
                 <ShieldCheck size={16} className="mr-2" />
                 Decisões de crédito inteligentes com IA

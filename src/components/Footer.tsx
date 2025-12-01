@@ -1,10 +1,32 @@
 
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import { Facebook, Instagram, Linkedin, Twitter } from "lucide-react";
 
 const Footer = () => {
+  const navigate = useNavigate();
+  const location = useLocation();
   const currentYear = new Date().getFullYear();
+  const isHomePage = location.pathname === "/";
+
+  const handleSectionClick = (hash: string, e: React.MouseEvent<HTMLAnchorElement>) => {
+    e.preventDefault();
+    // Remove o # do início se existir para normalizar
+    const hashWithoutHash = hash.startsWith('#') ? hash.substring(1) : hash;
+    const hashWithHash = `#${hashWithoutHash}`;
+    
+    if (isHomePage) {
+      // Se estiver na página inicial, apenas rola para a seção
+      const element = document.querySelector(hashWithHash);
+      if (element) {
+        element.scrollIntoView({ behavior: "smooth" });
+      }
+    } else {
+      // Se estiver em outra página, navega para a inicial com o hash
+      // Usa apenas o pathname e o hash separadamente
+      navigate({ pathname: '/', hash: hashWithoutHash });
+    }
+  };
   
   return (
     <footer className="bg-gray-50 pt-20 pb-8">
@@ -42,20 +64,18 @@ const Footer = () => {
             <ul className="space-y-3">
               <li><a href="#" className="text-gray-600 hover:text-teal-500 transition-colors">Sobre Nós</a></li>
               <li><a href="#" className="text-gray-600 hover:text-teal-500 transition-colors">Carreiras</a></li>
-              <li><a href="#" className="text-gray-600 hover:text-teal-500 transition-colors">Blog</a></li>
-              <li><a href="#" className="text-gray-600 hover:text-teal-500 transition-colors">Imprensa</a></li>
-              <li><a href="#contact" className="text-gray-600 hover:text-teal-500 transition-colors">Contato</a></li>
+            
+           
+              <li><a href="#contact" onClick={(e) => handleSectionClick("#contact", e)} className="text-gray-600 hover:text-teal-500 transition-colors">Contato</a></li>
             </ul>
           </div>
 
           <div>
             <h4 className="font-bold text-lg mb-4 text-riskon-900">Produto</h4>
             <ul className="space-y-3">
-              <li><a href="#features" className="text-gray-600 hover:text-teal-500 transition-colors">Recursos</a></li>
-              <li><a href="#" className="text-gray-600 hover:text-teal-500 transition-colors">Integrações</a></li>
-              <li><a href="#pricing" className="text-gray-600 hover:text-teal-500 transition-colors">Preços</a></li>
-              <li><a href="#" className="text-gray-600 hover:text-teal-500 transition-colors">Atualizações</a></li>
-              <li><a href="#faq" className="text-gray-600 hover:text-teal-500 transition-colors">FAQ</a></li>
+              <li><a href="#features" onClick={(e) => handleSectionClick("#features", e)} className="text-gray-600 hover:text-teal-500 transition-colors">Recursos</a></li>
+              <li><a href="#pricing" onClick={(e) => handleSectionClick("#pricing", e)} className="text-gray-600 hover:text-teal-500 transition-colors">Preços</a></li>
+              <li><a href="#faq" onClick={(e) => handleSectionClick("#faq", e)} className="text-gray-600 hover:text-teal-500 transition-colors">FAQ</a></li>
             </ul>
           </div>
 
