@@ -20,7 +20,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { CalendarIcon, Clock } from "lucide-react";
+import { CalendarIcon, Clock, CheckCircle2, User, Mail, Phone } from "lucide-react";
 
 interface ScheduleModalProps {
   open: boolean;
@@ -34,6 +34,14 @@ const ScheduleModal: React.FC<ScheduleModalProps> = ({ open, onOpenChange }) => 
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [showConfirmation, setShowConfirmation] = useState(false);
+  const [confirmedData, setConfirmedData] = useState<{
+    name: string;
+    email: string;
+    phone: string;
+    date: string;
+    time: string;
+  } | null>(null);
 
   // Horários disponíveis
   const allAvailableTimes = [
@@ -113,43 +121,150 @@ const ScheduleModal: React.FC<ScheduleModalProps> = ({ open, onOpenChange }) => 
     
     // Simular envio do formulário
     setTimeout(() => {
-      alert(
-        `Agendamento confirmado!\n\n` +
-        `Nome: ${name}\n` +
-        `Email: ${email}\n` +
-        `Telefone: ${phone}\n` +
-        `Data: ${format(selectedDate, "dd 'de' MMMM 'de' yyyy", { locale: ptBR })}\n` +
-        `Horário: ${selectedTime}`
-      );
+      // Salvar dados confirmados
+      setConfirmedData({
+        name,
+        email,
+        phone,
+        date: format(selectedDate, "dd 'de' MMMM 'de' yyyy", { locale: ptBR }),
+        time: selectedTime,
+      });
       
-      // Resetar formulário
-      setSelectedDate(undefined);
-      setSelectedTime("");
-      setName("");
-      setEmail("");
-      setPhone("");
       setIsSubmitting(false);
-      onOpenChange(false);
+      setShowConfirmation(true);
     }, 1000);
   };
 
   const handleClose = () => {
-    if (!isSubmitting) {
+    if (!isSubmitting && !showConfirmation) {
       onOpenChange(false);
     }
+  };
+
+  const handleCloseConfirmation = () => {
+    // Resetar formulário
+    setSelectedDate(undefined);
+    setSelectedTime("");
+    setName("");
+    setEmail("");
+    setPhone("");
+    setShowConfirmation(false);
+    setConfirmedData(null);
+    onOpenChange(false);
   };
 
   return (
     <Dialog open={open} onOpenChange={handleClose}>
       <DialogContent className="sm:max-w-[900px] max-h-[90vh] flex flex-col p-0">
-        <DialogHeader className="px-6 pt-6 pb-4">
-          <DialogTitle className="text-2xl font-bold text-riskon-900">
-            Agende uma Demonstração
-          </DialogTitle>
-          
-        </DialogHeader>
+        {showConfirmation && confirmedData ? (
+          // Tela de Confirmação
+          <div className="flex flex-col flex-1 overflow-hidden">
+            <div className="flex flex-col items-center justify-center p-6 overflow-y-auto flex-1">
+              <div className="flex flex-col items-center space-y-4 w-full max-w-md">
+                {/* Ícone de Sucesso */}
+                <div className="relative">
+                  <div className="absolute inset-0 bg-teal-100 rounded-full animate-ping opacity-75"></div>
+                  <div className="relative bg-teal-500 rounded-full p-4">
+                    <CheckCircle2 className="h-12 w-12 text-white" />
+                  </div>
+                </div>
 
-        <form onSubmit={handleSubmit} className="flex flex-col flex-1 overflow-hidden">
+                {/* Título */}
+                <div className="text-center space-y-1">
+                  <h2 className="text-2xl font-bold text-riskon-900">
+                    Agendamento Confirmado!
+                  </h2>
+                  <p className="text-sm text-gray-600">
+                    Seu agendamento foi realizado com sucesso
+                  </p>
+                </div>
+
+                {/* Resumo do Agendamento */}
+                <div className="w-full bg-gradient-to-br from-teal-50 to-white border-2 border-teal-200 rounded-xl p-4 space-y-3 shadow-lg">
+                  <h3 className="text-base font-semibold text-riskon-900 mb-2 pb-2 border-b border-teal-200">
+                    Resumo do Agendamento
+                  </h3>
+                  
+                  <div className="space-y-2.5">
+                    <div className="flex items-start gap-2.5">
+                      <div className="mt-0.5 p-1.5 bg-teal-100 rounded-lg flex-shrink-0">
+                        <User className="h-4 w-4 text-teal-600" />
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <p className="text-xs text-gray-600">Nome</p>
+                        <p className="font-semibold text-sm text-riskon-900 break-words">{confirmedData.name}</p>
+                      </div>
+                    </div>
+
+                    <div className="flex items-start gap-2.5">
+                      <div className="mt-0.5 p-1.5 bg-teal-100 rounded-lg flex-shrink-0">
+                        <Mail className="h-4 w-4 text-teal-600" />
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <p className="text-xs text-gray-600">Email</p>
+                        <p className="font-semibold text-sm text-riskon-900 break-words">{confirmedData.email}</p>
+                      </div>
+                    </div>
+
+                    <div className="flex items-start gap-2.5">
+                      <div className="mt-0.5 p-1.5 bg-teal-100 rounded-lg flex-shrink-0">
+                        <Phone className="h-4 w-4 text-teal-600" />
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <p className="text-xs text-gray-600">Telefone</p>
+                        <p className="font-semibold text-sm text-riskon-900">{confirmedData.phone}</p>
+                      </div>
+                    </div>
+
+                    <div className="flex items-start gap-2.5">
+                      <div className="mt-0.5 p-1.5 bg-teal-100 rounded-lg flex-shrink-0">
+                        <CalendarIcon className="h-4 w-4 text-teal-600" />
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <p className="text-xs text-gray-600">Data</p>
+                        <p className="font-semibold text-sm text-riskon-900">{confirmedData.date}</p>
+                      </div>
+                    </div>
+
+                    <div className="flex items-start gap-2.5">
+                      <div className="mt-0.5 p-1.5 bg-teal-100 rounded-lg flex-shrink-0">
+                        <Clock className="h-4 w-4 text-teal-600" />
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <p className="text-xs text-gray-600">Horário</p>
+                        <p className="font-semibold text-sm text-riskon-900">{confirmedData.time}</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Mensagem Informativa */}
+                <div className="w-full bg-blue-50 border border-blue-200 rounded-lg p-3">
+                  <p className="text-xs text-blue-800 text-center">
+                    Você receberá um email de confirmação com todos os detalhes do agendamento.
+                  </p>
+                </div>
+
+                {/* Botão de Fechar */}
+                <Button
+                  onClick={handleCloseConfirmation}
+                  className="w-full bg-teal-500 hover:bg-teal-600 text-white py-3 text-base font-semibold"
+                >
+                  Fechar
+                </Button>
+              </div>
+            </div>
+          </div>
+        ) : (
+          // Formulário de Agendamento
+          <>
+            <DialogHeader className="px-6 pt-6 pb-4">
+              <DialogTitle className="text-2xl font-bold text-riskon-900">
+                Agende uma Demonstração
+              </DialogTitle>
+            </DialogHeader>
+
+            <form onSubmit={handleSubmit} className="flex flex-col flex-1 overflow-hidden">
           <div className="px-6 pb-4 overflow-y-auto flex-1">
           {/* Informações de Contato */}
           <div className="space-y-4">
@@ -308,6 +423,8 @@ const ScheduleModal: React.FC<ScheduleModalProps> = ({ open, onOpenChange }) => 
             </Button>
           </DialogFooter>
         </form>
+          </>
+        )}
       </DialogContent>
     </Dialog>
   );
