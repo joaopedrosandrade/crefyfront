@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import ScrollToTop from "@/components/ScrollToTop";
+import SEO from "@/components/SEO";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -191,10 +192,8 @@ const ComeceGratuitamente = () => {
           }
         } else {
           // Se a API retornar erro, não preencher nada
-          console.error("Erro ao buscar dados do CNPJ:", response.status);
         }
       } catch (error) {
-        console.error("Erro ao buscar dados do CNPJ:", error);
         // Em caso de erro, não preencher nada
       } finally {
         setIsLoadingCompany(false);
@@ -249,9 +248,15 @@ const ComeceGratuitamente = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white">
-      <Navbar />
-      <ScrollToTop />
+    <>
+      <SEO
+        title="Comece Gratuitamente - Crefy"
+        description="Cadastre-se gratuitamente na Crefy e comece a usar inteligência artificial para suas decisões de crédito. Teste nossa plataforma sem compromisso."
+        keywords="cadastro gratuito, teste grátis, análise de crédito grátis, começar agora, plataforma de crédito, IA crédito"
+      />
+      <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white">
+        <Navbar />
+        <ScrollToTop />
       
       <section className="pt-32 pb-20">
         <div className="container mx-auto px-4 md:px-6 max-w-4xl">
@@ -809,7 +814,8 @@ const ComeceGratuitamente = () => {
       </section>
 
       <Footer />
-    </div>
+      </div>
+    </>
   );
 };
 
